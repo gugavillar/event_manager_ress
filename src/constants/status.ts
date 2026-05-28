@@ -3,7 +3,6 @@ export enum PaymentTypeAPI {
 	PIX = 'PIX',
 	CASH = 'CASH',
 	DONATION = 'DONATION',
-	DONATION_ROMERO = 'DONATION_ROMERO',
 	OPEN = 'OPEN',
 }
 
@@ -14,10 +13,6 @@ export const PaymentType = {
 	[PaymentTypeAPI.DONATION]: {
 		label: 'Doação',
 		value: PaymentTypeAPI.DONATION,
-	},
-	[PaymentTypeAPI.DONATION_ROMERO]: {
-		label: 'Doação Romero',
-		value: PaymentTypeAPI.DONATION_ROMERO,
 	},
 	[PaymentTypeAPI.OPEN]: {
 		label: 'Em aberto',
@@ -97,3 +92,41 @@ export enum TransactionAmountType {
 	ACCOUNT = 'ACCOUNT',
 	CASH = 'CASH',
 }
+
+export enum CivilStatusAPI {
+	SINGLE = 'SINGLE',
+	MARRIED = 'MARRIED',
+	DIVORCED = 'DIVORCED',
+	WIDOWED = 'WIDOWED',
+}
+
+export const CivilStatus = {
+	[CivilStatusAPI.SINGLE]: { label: 'Solteiro', value: CivilStatusAPI.SINGLE },
+	[CivilStatusAPI.MARRIED]: { label: 'Casado', value: CivilStatusAPI.MARRIED },
+	[CivilStatusAPI.DIVORCED]: { label: 'Divorciado', value: CivilStatusAPI.DIVORCED },
+	[CivilStatusAPI.WIDOWED]: { label: 'Viúvo', value: CivilStatusAPI.WIDOWED },
+}
+
+export const CivilStatusOptions = Object.values(CivilStatusAPI).map((value) => ({ ...CivilStatus[value] }))
+
+export enum ShirtsAPI {
+	P = 'P',
+	M = 'M',
+	G = 'G',
+	GG = 'GG',
+	XG = 'XG',
+	XGG = 'XGG',
+	SPECIAL = 'SPECIAL',
+}
+
+export const Shirts = {
+	[ShirtsAPI.P]: { label: 'P', value: ShirtsAPI.P },
+	[ShirtsAPI.M]: { label: 'M', value: ShirtsAPI.M },
+	[ShirtsAPI.G]: { label: 'G', value: ShirtsAPI.G },
+	[ShirtsAPI.GG]: { label: 'GG', value: ShirtsAPI.GG },
+	[ShirtsAPI.XG]: { label: 'XG', value: ShirtsAPI.XG },
+	[ShirtsAPI.XGG]: { label: 'XGG', value: ShirtsAPI.XGG },
+	[ShirtsAPI.SPECIAL]: { label: 'Tamanho Especial', value: ShirtsAPI.SPECIAL },
+}
+
+export const ShirtsOptions = Object.values(ShirtsAPI).map((value) => ({ ...Shirts[value] }))

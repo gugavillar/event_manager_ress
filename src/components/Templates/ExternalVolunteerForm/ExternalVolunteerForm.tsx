@@ -18,10 +18,21 @@ import { type FullSchemaType, fullSchema, stepsFields } from './ExternalVoluntee
 export type ExternalVolunteerFormProps = {
 	registrationValue?: number
 	eventId?: string
+	inscriptionType: MEMBERS
+	initialDate?: Date
+	finalDate?: Date
+	eventName?: string
 }
 
-export const ExternalVolunteerForm = ({ registrationValue, eventId }: ExternalVolunteerFormProps) => {
-	const [currentStep, setCurrentStep] = useState(0)
+export const ExternalVolunteerForm = ({
+	registrationValue,
+	eventId,
+	inscriptionType,
+	finalDate,
+	initialDate,
+	eventName,
+}: ExternalVolunteerFormProps) => {
+	const [currentStep, setCurrentStep] = useState(2)
 
 	const { create, isPending } = useCreateVolunteer()
 	const methods = useForm<FullSchemaType>({
@@ -40,6 +51,7 @@ export const ExternalVolunteerForm = ({ registrationValue, eventId }: ExternalVo
 			email: '',
 			hasCell: '',
 			hasHealth: '',
+			hasServed: '',
 			health: '',
 			name: '',
 			paymentMethod: undefined,
@@ -47,6 +59,7 @@ export const ExternalVolunteerForm = ({ registrationValue, eventId }: ExternalVo
 			pixModal: false,
 			relative: '',
 			relativePhone: '',
+			servedLastEvent: '',
 			terms: undefined,
 		},
 		mode: 'onChange',
@@ -75,12 +88,14 @@ export const ExternalVolunteerForm = ({ registrationValue, eventId }: ExternalVo
 	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
-		const { hasCell, cell, hasHealth, health, paymentMethod, terms, pixModal, ...data } = methods.getValues()
+		const { hasCell, cell, hasHealth, health, hasServed, servedLastEvent, paymentMethod, terms, pixModal, ...data } =
+			methods.getValues()
 
 		const formattedData = {
 			...data,
 			...(hasCell === 'Yes' && { cell }),
 			...(hasHealth === 'Yes' && { health }),
+			...(hasServed === 'Yes' && { servedLastEvent }),
 			birthdate: formatDateToSendToApi(data.birthdate),
 			eventId,
 			phone: data.phone.replace(/\D/g, ''),
@@ -113,13 +128,21 @@ export const ExternalVolunteerForm = ({ registrationValue, eventId }: ExternalVo
 					handlePrev={handlePrev}
 					isPending={isPending}
 					steps={[
-						{ content: <VolunteerExternalForm />, title: 'Voluntário' },
+						{ content: <VolunteerExternalForm eventName={eventName} />, title: 'Voluntário' },
 						{
 							content: <AddressExternalForm type={MEMBERS.VOLUNTEER} />,
 							title: 'Endereço',
 						},
 						{
-							content: <PaymentExternalForm registrationValue={registrationValue} setCurrentStep={setCurrentStep} />,
+							content: (
+								<PaymentExternalForm
+									finalDate={finalDate}
+									initialDate={initialDate}
+									inscriptionType={inscriptionType}
+									registrationValue={registrationValue}
+									setCurrentStep={setCurrentStep}
+								/>
+							),
 							title: 'Pagamento',
 						},
 					]}

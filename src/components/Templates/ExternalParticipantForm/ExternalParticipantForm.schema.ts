@@ -1,7 +1,7 @@
 import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
-import { MAX_FIELD_LENGTH, validatePhonesNotEquals } from '@/constants'
+import { CivilStatusAPI, MAX_FIELD_LENGTH, validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate, validateDateRange } from '@/formatters'
 
 export const ExternalParticipantFormSchemaStepOne = (minAge?: number | null, maxAge?: number | null) =>
@@ -23,6 +23,22 @@ export const ExternalParticipantFormSchemaStepOne = (minAge?: number | null, max
 				.trim()
 				.min(1, 'Campo obrigatório')
 				.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
+			civilStatus: z
+				.union([
+					z.enum([CivilStatusAPI.DIVORCED, CivilStatusAPI.MARRIED, CivilStatusAPI.SINGLE, CivilStatusAPI.WIDOWED], {
+						error: 'Campo obrigatório',
+					}),
+					z.string(),
+				])
+				.refine(
+					(value) =>
+						[CivilStatusAPI.DIVORCED, CivilStatusAPI.MARRIED, CivilStatusAPI.SINGLE, CivilStatusAPI.WIDOWED].includes(
+							value as CivilStatusAPI
+						),
+					{
+						error: 'Campo obrigatório',
+					}
+				),
 			email: z
 				.email({ error: 'Email inválido' })
 				.trim()
@@ -160,6 +176,7 @@ export const stepsFields = (minAge?: number | null, maxAge?: number | null, isIn
 				'called',
 				'birthdate',
 				'phone',
+				'civilStatus',
 				'responsible',
 				'responsiblePhone',
 				'hasReligion',

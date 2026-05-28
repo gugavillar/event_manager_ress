@@ -51,6 +51,7 @@ export const Participants = () => {
 			},
 			birthdate: '',
 			called: '',
+			civilStatus: '',
 			email: '',
 			eventId: '',
 			hasHealth: '',

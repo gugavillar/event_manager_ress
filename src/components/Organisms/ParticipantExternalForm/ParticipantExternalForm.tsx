@@ -4,7 +4,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { InputField, MaskedInputField, SelectField } from '@/components/Molecules'
 import type { FullSchemaType } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
-import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
+import { CivilStatusOptions, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 
 type ParticipantExternalFormProps = {
 	isNotHappening?: boolean
@@ -34,6 +34,9 @@ export const ParticipantExternalForm = ({ isNotHappening }: ParticipantExternalF
 				<MaskedInputField fieldName="birthdate" format="##/##/####" placeholder="DD/MM/AAAA">
 					Data de nascimento
 				</MaskedInputField>
+				<SelectField fieldName="civilStatus" options={CivilStatusOptions} placeholder="Selecione uma opção">
+					Estado civil
+				</SelectField>
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<SelectField fieldName="hasReligion" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">

@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { InputField, MaskedInputField, SearchBox, SelectField } from '@/components/Molecules'
 import type { SelectedParticipant } from '@/components/Templates'
-import { PARTICIPANT_MODAL_TYPE, UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
+import { CivilStatusOptions, PARTICIPANT_MODAL_TYPE, UF, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 import { formatDateToSendToApi, formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetCities } from '@/services/queries/cities'
@@ -151,6 +151,9 @@ export const ParticipantDrawer = memo(({ selectedParticipant, setSelectedPartici
 				<MaskedInputField fieldName="birthdate" format="##/##/####">
 					Data de nascimento
 				</MaskedInputField>
+				<SelectField fieldName="civilStatus" options={CivilStatusOptions} placeholder="Selecione uma opção">
+					Estado civil
+				</SelectField>
 				<SelectField fieldName="hasReligion" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
 					Tem religião?
 				</SelectField>

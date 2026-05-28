@@ -13,6 +13,7 @@ import { useCreateParticipant } from '@/services/queries/participants'
 import { generateToastError } from '@/utils/errors'
 
 import { type FullSchemaType, fullSchema, stepsFields } from './ExternalParticipantForm.schema'
+import { ModalInformation } from './ModalInformation'
 
 export type ExternalParticipantFormProps = {
 	registrationValue?: number
@@ -21,6 +22,9 @@ export type ExternalParticipantFormProps = {
 	eventId?: string
 	isInterestedList?: boolean
 	isNotHappening?: boolean
+	initialDate?: Date
+	finalDate?: Date
+	inscriptionType: MEMBERS
 }
 
 export const ExternalParticipantForm = ({
@@ -30,8 +34,12 @@ export const ExternalParticipantForm = ({
 	eventId,
 	isInterestedList,
 	isNotHappening,
+	initialDate,
+	finalDate,
+	inscriptionType,
 }: ExternalParticipantFormProps) => {
 	const [currentStep, setCurrentStep] = useState(0)
+	const [isOpen, setIsOpen] = useState(true)
 
 	const { create, isPending } = useCreateParticipant()
 	const methods = useForm<FullSchemaType>({
@@ -45,6 +53,7 @@ export const ExternalParticipantForm = ({
 			},
 			birthdate: '',
 			called: '',
+			civilStatus: '',
 			email: '',
 			hasHealth: '',
 			hasReligion: '',
@@ -145,7 +154,12 @@ export const ExternalParticipantForm = ({
 							? [
 									{
 										content: (
-											<PaymentExternalForm registrationValue={registrationValue} setCurrentStep={setCurrentStep} />
+											<PaymentExternalForm
+												initialDate={initialDate}
+												inscriptionType={inscriptionType}
+												registrationValue={registrationValue}
+												setCurrentStep={setCurrentStep}
+											/>
 										),
 										title: 'Pagamento',
 									},
@@ -154,6 +168,13 @@ export const ExternalParticipantForm = ({
 					]}
 				/>
 			</FormProvider>
+			<ModalInformation
+				finalDate={finalDate}
+				initialDate={initialDate}
+				isOpen={isOpen}
+				registrationValue={registrationValue}
+				setIsOpen={setIsOpen}
+			/>
 		</div>
 	)
 }

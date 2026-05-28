@@ -29,7 +29,6 @@ enum PaymentType {
   PIX
   CASH
   DONATION
-  DONATION_ROMERO
 }
 
 enum GroupType {
@@ -45,6 +44,23 @@ enum TransactionsType {
 enum TransactionsIncomeOrOutcomeType {
   CASH
   ACCOUNT
+}
+
+enum CivilStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+enum ShirtSize {
+  P
+  M
+  G
+  GG
+  XG
+  XGG
+  SPECIAL
 }
 
 model User {
@@ -70,6 +86,7 @@ model Event {
   finalDate                     DateTime
   participantPrice              Decimal              @db.Decimal(8, 2)
   volunteerPrice                Decimal              @db.Decimal(8, 2)
+  volunteerPriceWithShirt       Decimal?             @db.Decimal(8, 2)
   isParticipantRegistrationOpen Boolean              @default(true)
   isVolunteerRegistrationOpen   Boolean              @default(true)
   isInterestedListOpen          Boolean              @default(false)
@@ -122,30 +139,33 @@ model EventVolunteerRole {
 }
 
 model Volunteer {
-  id               String                        @id @default(uuid())
-  name             String
-  called           String
-  email            String
-  phone            String
-  birthdate        DateTime
-  cell             String?
-  relative         String
-  relativePhone    String
-  health           String?
-  community        String
-  checkIn          ParticipantOrVolunteerStatus?
-  createdAt        DateTime                      @default(now())
-  updatedAt        DateTime                      @updatedAt
-  eventId          String
-  event            Event                         @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  address          VolunteerAddress?
-  payments         VolunteerPayment[]
-  groupMemberships GroupMember[]                 @relation("GroupMemberToVolunteer")
-  roomMember       RoomMember[]                  @relation("RoomMemberToVolunteer")
-
-  eventRoles      EventVolunteerRole[] @relation("VolunteersOnEventRoles")
-  leadingRoles    EventVolunteerRole[] @relation("LeadersOnEventRoles")
-  MeetingPresence MeetingPresence[]    @relation("MeetingsPresence")
+  id                    String                        @id @default(uuid())
+  name                  String
+  called                String
+  email                 String
+  phone                 String
+  birthdate             DateTime
+  cell                  String?
+  relative              String
+  relativePhone         String
+  health                String?
+  community             String
+  withShirt             Boolean                       @default(false)
+  shirtSize             ShirtSize?
+  servedLastEvent       String?
+  meetingsParticipation Boolean                       @default(false)
+  checkIn               ParticipantOrVolunteerStatus?
+  createdAt             DateTime                      @default(now())
+  updatedAt             DateTime                      @updatedAt
+  eventId               String
+  event                 Event                         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  address               VolunteerAddress?
+  payments              VolunteerPayment[]
+  groupMemberships      GroupMember[]                 @relation("GroupMemberToVolunteer")
+  roomMember            RoomMember[]                  @relation("RoomMemberToVolunteer")
+  eventRoles            EventVolunteerRole[]          @relation("VolunteersOnEventRoles")
+  leadingRoles          EventVolunteerRole[]          @relation("LeadersOnEventRoles")
+  MeetingPresence       MeetingPresence[]             @relation("MeetingsPresence")
 
   @@unique([email, eventId])
   @@map("volunteers")
@@ -194,6 +214,7 @@ model Participant {
   responsiblePhone String
   host             String
   hostPhone        String
+  civilStatus      CivilStatus
   health           String?
   interested       Boolean?
   pictureUrl       String?

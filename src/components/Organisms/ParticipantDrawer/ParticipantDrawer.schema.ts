@@ -1,7 +1,7 @@
 import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
-import { MAX_FIELD_LENGTH, validatePhonesNotEquals } from '@/constants'
+import { CivilStatusAPI, MAX_FIELD_LENGTH, validatePhonesNotEquals } from '@/constants'
 import { validateBirthdate } from '@/formatters'
 
 export const ParticipantSchema = z
@@ -37,6 +37,22 @@ export const ParticipantSchema = z
 			.trim()
 			.min(1, 'Campo obrigatório')
 			.max(MAX_FIELD_LENGTH, { error: `Tamanho máximo de ${MAX_FIELD_LENGTH} caracteres` }),
+		civilStatus: z
+			.union([
+				z.enum([CivilStatusAPI.DIVORCED, CivilStatusAPI.MARRIED, CivilStatusAPI.SINGLE, CivilStatusAPI.WIDOWED], {
+					error: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine(
+				(value) =>
+					[CivilStatusAPI.DIVORCED, CivilStatusAPI.MARRIED, CivilStatusAPI.SINGLE, CivilStatusAPI.WIDOWED].includes(
+						value as CivilStatusAPI
+					),
+				{
+					error: 'Campo obrigatório',
+				}
+			),
 		email: z
 			.email({ message: 'Email inválido' })
 			.trim()

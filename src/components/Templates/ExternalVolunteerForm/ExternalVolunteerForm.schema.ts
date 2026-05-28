@@ -47,6 +47,16 @@ export const ExternalVolunteerFormSchemaStepOne = z
 			.refine((value) => ['Yes', 'No'].includes(value), {
 				error: 'Campo obrigatório',
 			}),
+		hasServed: z
+			.union([
+				z.enum(['Yes', 'No'], {
+					error: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['Yes', 'No'].includes(value), {
+				error: 'Campo obrigatório',
+			}),
 		health: z.string().optional(),
 		name: z
 			.string()
@@ -67,6 +77,7 @@ export const ExternalVolunteerFormSchemaStepOne = z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
+		servedLastEvent: z.string().optional(),
 	})
 	.superRefine((data, ctx) => {
 		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
@@ -81,6 +92,13 @@ export const ExternalVolunteerFormSchemaStepOne = z
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['health'],
+			})
+		}
+		if (data.hasServed === 'Yes' && !data.servedLastEvent?.trim()) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Campo obrigatório',
+				path: ['servedLastEvent'],
 			})
 		}
 		validatePhonesNotEquals(data.phone, [{ field: 'relativePhone', phone: data.relativePhone }], ctx)
@@ -143,6 +161,8 @@ export const stepsFields = [
 			'relative',
 			'relativePhone',
 			'hasCell',
+			'hasServed',
+			'servedLastEvent',
 			'cell',
 			'hasHealth',
 			'health',
