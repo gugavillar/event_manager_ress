@@ -20,7 +20,7 @@ type DonationDrawerProps = {
 }
 
 const paymentMethods = PaymentSelectOptions.filter(
-	(item) => ![PaymentTypeAPI.DONATION, PaymentTypeAPI.DONATION_ROMERO, PaymentTypeAPI.OPEN].includes(item.value)
+	(item) => ![PaymentTypeAPI.DONATION, PaymentTypeAPI.OPEN].includes(item.value)
 )
 
 export const DonationDrawer = ({ isOpen, setIsOpen }: DonationDrawerProps) => {

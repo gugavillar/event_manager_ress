@@ -50,7 +50,7 @@ export default async function RegistrationPage({ params }: Params) {
 	return (
 		<div className="grid h-dvh w-full lg:grid-cols-2">
 			<Image backgroundImage={backgroundImage} />
-			<div className="size-full h-[50dvh] overflow-y-auto lg:h-full">
+			<div className="size-full h-[70dvh] overflow-y-auto lg:h-full">
 				<div className="flex min-h-full flex-col items-center justify-center space-y-8 p-8">
 					<header className="space-y-2 text-center">
 						<h1 className="text-4xl">{event?.name}</h1>
@@ -61,6 +61,9 @@ export default async function RegistrationPage({ params }: Params) {
 					</header>
 					<ExternalParticipantForm
 						eventId={event?.id}
+						finalDate={event?.finalDate}
+						initialDate={event?.initialDate}
+						inscriptionType={MEMBERS.PARTICIPANT}
 						isNotHappening={isNotHappening}
 						maxAge={event?.maxAge}
 						minAge={event?.minAge}

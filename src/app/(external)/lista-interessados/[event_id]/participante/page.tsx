@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { Image } from '@/components/Atoms'
 import { ClosedInscriptions } from '@/components/Templates'
 import { ExternalParticipantForm } from '@/components/Templates/ExternalParticipantForm'
-import { interestedListPermitCreateRegistration } from '@/constants'
+import { interestedListPermitCreateRegistration, MEMBERS } from '@/constants'
 import { getEventById } from '@/server'
 import type { EventsAPI } from '@/services/queries/events/event.type'
 
@@ -61,6 +61,7 @@ export default async function InterestedPage({ params }: Params) {
 					</header>
 					<ExternalParticipantForm
 						eventId={event?.id}
+						inscriptionType={MEMBERS.PARTICIPANT}
 						isInterestedList
 						isNotHappening={isNotHappening}
 						registrationValue={Number(event?.participantPrice)}

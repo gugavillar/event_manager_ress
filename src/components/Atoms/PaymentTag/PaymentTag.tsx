@@ -12,7 +12,6 @@ const STATUS_COLORS = {
 	[PaymentTypeAPI.CASH]: 'bg-yellow-400/30',
 	[PaymentTypeAPI.PIX]: 'bg-green-500/30',
 	[PaymentTypeAPI.DONATION]: 'bg-purple-400/30',
-	[PaymentTypeAPI.DONATION_ROMERO]: 'bg-purple-600/30',
 	[PaymentTypeAPI.OPEN]: 'bg-gray-400/30',
 }
 

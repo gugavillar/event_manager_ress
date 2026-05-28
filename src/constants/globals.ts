@@ -118,9 +118,9 @@ export const PAYMENT_METHOD_EXTERNAL_OPTIONS = [
 ]
 
 export const PIX = {
-	city: 'Gravatá',
+	city: 'Vitória de Santo Antão',
 	key: process.env.NEXT_PUBLIC_PIX_KEY ?? '',
-	name: 'Igreja Anglicana Vida',
+	name: 'Catedral Ress',
 }
 
 export const NO_FUNCTION = {

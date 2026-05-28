@@ -23,13 +23,7 @@ export const createParticipantPayment = async (values: CreateParticipantPaymentA
 			eventId: z.uuid(),
 			participantId: z.uuid(),
 			paymentReceived: z.number().optional(),
-			paymentType: z.enum([
-				PaymentTypeAPI.CARD,
-				PaymentTypeAPI.CASH,
-				PaymentTypeAPI.PIX,
-				PaymentTypeAPI.DONATION,
-				PaymentTypeAPI.DONATION_ROMERO,
-			]),
+			paymentType: z.enum([PaymentTypeAPI.CARD, PaymentTypeAPI.CASH, PaymentTypeAPI.PIX, PaymentTypeAPI.DONATION]),
 			paymentValue: z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE),
 		}).parse({ ...values })
 
@@ -40,7 +34,7 @@ export const createParticipantPayment = async (values: CreateParticipantPaymentA
 				},
 			})
 
-			if ([PaymentTypeAPI.DONATION, PaymentTypeAPI.DONATION_ROMERO].includes(values.paymentType)) {
+			if ([PaymentTypeAPI.DONATION].includes(values.paymentType)) {
 				return
 			}
 

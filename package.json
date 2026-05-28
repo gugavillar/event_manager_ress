@@ -17,6 +17,7 @@
 		"browser-image-compression": "^2.0.2",
 		"copy-to-clipboard": "^4.0.2",
 		"date-fns": "^4.3.0",
+		"extenso": "^2.1.0",
 		"file-saver": "^2.0.5",
 		"imgbb-image-uploader": "^1.0.6",
 		"jsonwebtoken": "^9.0.3",

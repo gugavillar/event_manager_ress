@@ -14,29 +14,16 @@ export const PaymentModalSchema = (maxPaidValue: number, paidValue: number) =>
 			paymentReceived: z.string().optional(),
 			paymentType: z
 				.union([
-					z.enum(
-						[
-							PaymentTypeAPI.CARD,
-							PaymentTypeAPI.CASH,
-							PaymentTypeAPI.PIX,
-							PaymentTypeAPI.DONATION,
-							PaymentTypeAPI.DONATION_ROMERO,
-						],
-						{
-							error: 'Campo obrigatório',
-						}
-					),
+					z.enum([PaymentTypeAPI.CARD, PaymentTypeAPI.CASH, PaymentTypeAPI.PIX, PaymentTypeAPI.DONATION], {
+						error: 'Campo obrigatório',
+					}),
 					z.string(),
 				])
 				.refine(
 					(val) =>
-						[
-							PaymentTypeAPI.CARD,
-							PaymentTypeAPI.CASH,
-							PaymentTypeAPI.PIX,
-							PaymentTypeAPI.DONATION,
-							PaymentTypeAPI.DONATION_ROMERO,
-						].includes(val as PaymentTypeAPI),
+						[PaymentTypeAPI.CARD, PaymentTypeAPI.CASH, PaymentTypeAPI.PIX, PaymentTypeAPI.DONATION].includes(
+							val as PaymentTypeAPI
+						),
 					{
 						error: 'Campo obrigatório',
 					}

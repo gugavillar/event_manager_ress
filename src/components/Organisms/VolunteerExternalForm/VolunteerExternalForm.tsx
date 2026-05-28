@@ -6,10 +6,13 @@ import { InputField, MaskedInputField, SelectField } from '@/components/Molecule
 import type { FullSchemaType } from '@/components/Templates/ExternalVolunteerForm/ExternalVolunteerForm.schema'
 import { YES_OR_NO_SELECT_OPTIONS } from '@/constants'
 
-export const VolunteerExternalForm = () => {
+export const VolunteerExternalForm = ({ eventName }: { eventName?: string }) => {
 	const { watch } = useFormContext<FullSchemaType>()
 	const hasCell = watch('hasCell')
 	const hasHealth = watch('hasHealth')
+	const hasServed = watch('hasServed')
+	const lastEventName = eventName ? eventName?.replace(/\d/g, '') : ''
+
 	return (
 		<div className="space-y-6">
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
@@ -31,6 +34,16 @@ export const VolunteerExternalForm = () => {
 				<InputField fieldName="community" placeholder="Nome da igreja ou comunidade">
 					Igreja que frequenta
 				</InputField>
+			</div>
+			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+				<SelectField fieldName="hasServed" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
+					Serviu no último {lastEventName}?
+				</SelectField>
+				{hasServed === 'Yes' && (
+					<InputField fieldName="servedLastEvent" placeholder="Função">
+						Qual a função?
+					</InputField>
+				)}
 			</div>
 			<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<SelectField fieldName="hasCell" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">

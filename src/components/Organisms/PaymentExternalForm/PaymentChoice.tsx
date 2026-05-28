@@ -33,8 +33,6 @@ export const PaymentChoice = ({
 
 	if (!paymentMethod) return null
 
-	const cardTotalValue = currencyValue(Number(registrationValue) + 20)
-
 	return (
 		<div className="flex flex-col items-center justify-center space-y-8">
 			{paymentMethod === PAYMENT_METHOD_EXTERNAL_OPTIONS[1].value ? (
@@ -69,7 +67,7 @@ export const PaymentChoice = ({
 								Dinheiro: <span className="font-semibold">{currencyValue(registrationValue as number)}</span>
 							</h4>
 							<h4 className="text-lg">
-								Cartão: <span className="font-semibold">{cardTotalValue} (até 4x)</span>
+								Cartão: <span className="font-semibold">{currencyValue(registrationValue as number)}</span>
 							</h4>
 						</div>
 					</div>

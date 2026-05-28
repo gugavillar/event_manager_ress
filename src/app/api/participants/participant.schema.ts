@@ -1,7 +1,7 @@
 import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
-import { MAX_FIELD_LENGTH } from '@/constants'
+import { CivilStatusAPI, MAX_FIELD_LENGTH } from '@/constants'
 
 export const participantSchemaRoute = z.object({
 	address: z.object({
@@ -17,6 +17,7 @@ export const participantSchemaRoute = z.object({
 	}),
 	birthdate: z.iso.datetime({ precision: 3 }),
 	called: z.string().trim().min(1).max(MAX_FIELD_LENGTH),
+	civilStatus: z.enum([CivilStatusAPI.DIVORCED, CivilStatusAPI.MARRIED, CivilStatusAPI.SINGLE, CivilStatusAPI.WIDOWED]),
 	email: z
 		.email()
 		.trim()
