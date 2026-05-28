@@ -6,8 +6,8 @@ import { roboto } from '@/theme'
 import './globals.css'
 
 export const metadata: Metadata = {
-	description: 'Gerenciador de eventos da igreja anglicana vida',
-	title: 'Gerenciador de eventos - Anglicana Vida',
+	description: 'Gerenciador de eventos da igreja ress pombos',
+	title: 'Gerenciador de eventos - Ress Pombos',
 }
 
 export const viewport: Viewport = {
