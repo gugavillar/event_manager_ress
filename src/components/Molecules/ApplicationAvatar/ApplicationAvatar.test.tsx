@@ -21,10 +21,10 @@ describe('ApplicationAvatar component', () => {
 		expect(paragraph).toBeInTheDocument()
 	})
 
-	it('renders a paragraph with the text "Anglicana Vida"', () => {
+	it('renders a paragraph with the text "Ress Pombos"', () => {
 		const { getByText } = render(<ApplicationAvatar collapsed={false} handleCollapse={handleCollapse} />)
 
-		const paragraph = getByText('Anglicana Vida')
+		const paragraph = getByText('Ress Pombos')
 
 		expect(paragraph).toBeInTheDocument()
 	})
