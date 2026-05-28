@@ -47,6 +47,11 @@ export const EventSchema = z
 				error: 'Campo obrigatório',
 			})
 			.min(1, 'Campo obrigatório'),
+		volunteerPriceWithShirt: z
+			.string({
+				error: 'Campo obrigatório',
+			})
+			.min(1, 'Campo obrigatório'),
 	})
 	.refine((data) => isEqualOrIsBeforeFirstDate(data.initialDate, data.finalDate), {
 		error: 'Data inicial deve ser menor que a data final',

@@ -20,7 +20,7 @@ export const ApplicationAvatar = memo(({ collapsed, handleCollapse }: Applicatio
 					<Tickets className="text-slate-100" data-testid="ticket-icon" size={48} />
 					<div>
 						<Text className="font-bold text-gray-100 text-xl">Hub de Eventos</Text>
-						<Text className="text-gray-100/40 text-lg">Anglicana Vida</Text>
+						<Text className="text-gray-100/40 text-lg">Ress Pombos</Text>
 					</div>
 				</>
 			)}

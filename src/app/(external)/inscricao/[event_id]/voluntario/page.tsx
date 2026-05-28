@@ -62,6 +62,7 @@ export default async function RegistrationPage({ params }: Params) {
 						eventName={event?.name}
 						inscriptionType={MEMBERS.VOLUNTEER}
 						registrationValue={Number(event?.volunteerPrice)}
+						registrationValueWithShirt={Number(event?.volunteerPriceWithShirt)}
 					/>
 				</div>
 			</div>

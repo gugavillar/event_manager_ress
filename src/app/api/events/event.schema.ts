@@ -11,6 +11,7 @@ export const eventSchemaRoute = z.object({
 	name: z.string().trim().min(3).max(MAX_FIELD_LENGTH),
 	participantPrice: z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE),
 	volunteerPrice: z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE),
+	volunteerPriceWithShirt: z.coerce.number().min(MIN_CURRENCY_VALUE).max(MAX_CURRENCY_VALUE),
 })
 
 export type EventSchemaRouteType = z.infer<typeof eventSchemaRoute>

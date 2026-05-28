@@ -57,7 +57,7 @@ export const ModalInformation = memo(
 							</li>
 							<li>
 								Horário de chegada na Igreja para <strong>CHECK-IN</strong> será às{' '}
-								<strong>17:30h no dia {checkInDate}</strong>;
+								<strong>18:30h no dia {checkInDate}</strong>;
 							</li>
 							<li>
 								Teremos prazer em acolher seus familiares e amigos no culto de encerramento que será realizado no

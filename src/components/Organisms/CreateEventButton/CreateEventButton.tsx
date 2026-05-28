@@ -28,6 +28,7 @@ export const CreateEventButton = memo(({ selectedEvent, setSelectedEvent }: Crea
 			name: '',
 			participantPrice: '',
 			volunteerPrice: '',
+			volunteerPriceWithShirt: '',
 		},
 		mode: 'onChange',
 		resolver: zodResolver(EventSchema),

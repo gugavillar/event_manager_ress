@@ -66,8 +66,11 @@ export const PaymentChoice = ({
 							<h4 className="text-lg">
 								Dinheiro: <span className="font-semibold">{currencyValue(registrationValue as number)}</span>
 							</h4>
-							<h4 className="text-lg">
-								Cartão: <span className="font-semibold">{currencyValue(registrationValue as number)}</span>
+							<h4 className="flex flex-col text-lg">
+								<p>
+									Cartão: <span className="font-semibold">{currencyValue(registrationValue as number)}</span>
+								</p>
+								<small className="text-xs">Valor tem acréscimo devido taxas</small>
 							</h4>
 						</div>
 					</div>

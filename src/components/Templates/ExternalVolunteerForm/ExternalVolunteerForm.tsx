@@ -22,6 +22,7 @@ export type ExternalVolunteerFormProps = {
 	initialDate?: Date
 	finalDate?: Date
 	eventName?: string
+	registrationValueWithShirt?: number
 }
 
 export const ExternalVolunteerForm = ({
@@ -31,8 +32,9 @@ export const ExternalVolunteerForm = ({
 	finalDate,
 	initialDate,
 	eventName,
+	registrationValueWithShirt,
 }: ExternalVolunteerFormProps) => {
-	const [currentStep, setCurrentStep] = useState(2)
+	const [currentStep, setCurrentStep] = useState(0)
 
 	const { create, isPending } = useCreateVolunteer()
 	const methods = useForm<FullSchemaType>({
@@ -60,7 +62,9 @@ export const ExternalVolunteerForm = ({
 			relative: '',
 			relativePhone: '',
 			servedLastEvent: '',
+			shirtSize: '',
 			terms: undefined,
+			withShirt: '',
 		},
 		mode: 'onChange',
 		resolver: zodResolver(fullSchema),
@@ -88,8 +92,19 @@ export const ExternalVolunteerForm = ({
 	const onSubmit: SubmitHandler<FullSchemaType> = async () => {
 		if (!eventId) return
 
-		const { hasCell, cell, hasHealth, health, hasServed, servedLastEvent, paymentMethod, terms, pixModal, ...data } =
-			methods.getValues()
+		const {
+			hasCell,
+			cell,
+			hasHealth,
+			health,
+			hasServed,
+			servedLastEvent,
+			paymentMethod,
+			terms,
+			pixModal,
+			withShirt,
+			...data
+		} = methods.getValues()
 
 		const formattedData = {
 			...data,
@@ -100,6 +115,7 @@ export const ExternalVolunteerForm = ({
 			eventId,
 			phone: data.phone.replace(/\D/g, ''),
 			relativePhone: data.relativePhone.replace(/\D/g, ''),
+			withShirt: withShirt === 'Yes',
 		}
 
 		await create(
@@ -140,6 +156,7 @@ export const ExternalVolunteerForm = ({
 									initialDate={initialDate}
 									inscriptionType={inscriptionType}
 									registrationValue={registrationValue}
+									registrationValueWithShirt={registrationValueWithShirt}
 									setCurrentStep={setCurrentStep}
 								/>
 							),

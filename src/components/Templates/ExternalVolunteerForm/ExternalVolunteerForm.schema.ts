@@ -130,18 +130,32 @@ export const ExternalVolunteerFormSchemaStepTwo = z.object({
 	}),
 })
 
-export const ExternalVolunteerFormSchemaStepThree = z.object({
-	paymentMethod: z
-		.union([
-			z.enum(['PIX', 'Cash/Card'], {
+export const ExternalVolunteerFormSchemaStepThree = z
+	.object({
+		paymentMethod: z
+			.union([
+				z.enum(['PIX', 'Cash/Card'], {
+					error: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['PIX', 'Cash/Card'].includes(value), {
 				error: 'Campo obrigatório',
 			}),
-			z.string(),
-		])
-		.refine((value) => ['PIX', 'Cash/Card'].includes(value), {
-			error: 'Campo obrigatório',
+		shirtSize: z.string().optional(),
+		withShirt: z.union([z.enum(['Yes', 'No']), z.string()]).refine((value) => ['Yes', 'No'].includes(value), {
+			error: 'Campo obrigatório',
 		}),
-})
+	})
+	.superRefine((data, ctx) => {
+		if (data.withShirt === 'Yes' && !data.shirtSize) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Campo obrigatório',
+				path: ['shirtSize'],
+			})
+		}
+	})
 
 export const fullSchema = z.intersection(
 	z.intersection(ExternalVolunteerFormSchemaStepOne, ExternalVolunteerFormSchemaStepTwo),
@@ -175,7 +189,7 @@ export const stepsFields = [
 		schema: ExternalVolunteerFormSchemaStepTwo,
 	},
 	{
-		fields: ['paymentMethod'],
+		fields: ['paymentMethod', 'shirtSize', 'withShirt'],
 		schema: ExternalVolunteerFormSchemaStepThree,
 	},
 ] as const

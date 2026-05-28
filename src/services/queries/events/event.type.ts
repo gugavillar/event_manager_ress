@@ -11,6 +11,7 @@ export type FormEvent = {
 	maxAge?: number
 	participantPrice: number
 	volunteerPrice: number
+	volunteerPriceWithShirt: number
 	file: any
 }
 
@@ -22,6 +23,7 @@ export type EventsAPI = {
 	finalDate: string
 	participantPrice: string
 	volunteerPrice: string
+	volunteerPriceWithShirt: string
 	isParticipantRegistrationOpen: boolean
 	isVolunteerRegistrationOpen: boolean
 	isInterestedListOpen: boolean

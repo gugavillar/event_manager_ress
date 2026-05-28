@@ -33,6 +33,10 @@ export const HEADER_LABELS = [
 		label: 'R$ Voluntário',
 	},
 	{
+		accessor: 'volunteerPriceWithShirt',
+		label: 'R$ Voluntário Camisa',
+	},
+	{
 		accessor: 'actions',
 		label: '',
 	},
@@ -159,5 +163,6 @@ export const formatTableData = (
 		initialDate: format(event.initialDate, 'dd/MM/yyyy'),
 		participantPrice: currencyValue(Number(event.participantPrice)),
 		volunteerPrice: currencyValue(Number(event.volunteerPrice)),
+		volunteerPriceWithShirt: currencyValue(Number(event.volunteerPriceWithShirt ?? 0)),
 	}))
 }

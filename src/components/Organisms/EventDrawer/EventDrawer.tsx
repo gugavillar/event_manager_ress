@@ -38,6 +38,7 @@ export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProp
 			initialDate: formatDateToSendToApi(values.initialDate),
 			participantPrice: Number(removeCurrencyFormat(values.participantPrice)),
 			volunteerPrice: Number(removeCurrencyFormat(values.volunteerPrice)),
+			volunteerPriceWithShirt: Number(removeCurrencyFormat(values.volunteerPriceWithShirt)),
 			...(values.minAge ? { minAge: Number(values.minAge) } : { minAge: null }),
 			...(values.maxAge ? { maxAge: Number(values.maxAge) } : { maxAge: null }),
 		} as FormEvent
@@ -110,6 +111,9 @@ export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProp
 				</CurrencyInputField>
 				<CurrencyInputField fieldName="volunteerPrice" type="tel" value={data?.volunteerPrice}>
 					Valor ficha voluntário
+				</CurrencyInputField>
+				<CurrencyInputField fieldName="volunteerPriceWithShirt" type="tel" value={data?.volunteerPriceWithShirt}>
+					Valor ficha voluntário com camisa
 				</CurrencyInputField>
 				<MaskedInputField fieldName="initialDate" format="##/##/####" value={data?.initialDate}>
 					Data de início do evento
