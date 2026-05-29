@@ -25,6 +25,7 @@ export const useGetEvent = (eventId: EventsAPI['id'] | null) => {
 			initialDate: format(data.initialDate, 'dd/MM/yyyy'),
 			participantPrice: currencyValue(Number(data.participantPrice)),
 			volunteerPrice: currencyValue(Number(data.volunteerPrice)),
+			volunteerPriceWithShirt: currencyValue(Number(data.volunteerPriceWithShirt)),
 		}),
 	})
 
