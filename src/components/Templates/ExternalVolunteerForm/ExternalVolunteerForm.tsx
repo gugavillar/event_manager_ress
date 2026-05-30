@@ -103,6 +103,7 @@ export const ExternalVolunteerForm = ({
 			terms,
 			pixModal,
 			withShirt,
+			shirtSize,
 			...data
 		} = methods.getValues()
 
@@ -116,6 +117,7 @@ export const ExternalVolunteerForm = ({
 			phone: data.phone.replace(/\D/g, ''),
 			relativePhone: data.relativePhone.replace(/\D/g, ''),
 			withShirt: withShirt === 'Yes',
+			...(withShirt === 'Yes' && { shirtSize }),
 		}
 
 		await create(

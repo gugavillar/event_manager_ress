@@ -1,7 +1,7 @@
 import { validateEmail, validatePhone, validateUF } from 'validations-br'
 import { z } from 'zod'
 
-import { MAX_FIELD_LENGTH } from '@/constants'
+import { MAX_FIELD_LENGTH, ShirtsAPI } from '@/constants'
 
 export const volunteerSchemaRoute = z.object({
 	address: z.object({
@@ -34,6 +34,11 @@ export const volunteerSchemaRoute = z.object({
 		.string()
 		.trim()
 		.refine((value) => validatePhone(value)),
+	servedLastEvent: z.string().trim().nullable().optional(),
+	shirtSize: z
+		.enum([ShirtsAPI.P, ShirtsAPI.M, ShirtsAPI.G, ShirtsAPI.GG, ShirtsAPI.XG, ShirtsAPI.XGG, ShirtsAPI.SPECIAL])
+		.optional(),
+	withShirt: z.boolean(),
 })
 
 export type VolunteerSchemaRouteType = z.infer<typeof volunteerSchemaRoute>

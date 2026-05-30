@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 import { type VolunteerSchemaRouteType, volunteerSchemaRoute } from '@/app/api/volunteers/volunteer.schema'
-import { deepTrim } from '@/constants'
+import { deepTrim, MEMBERS } from '@/constants'
 import { prisma } from '@/lib/prisma'
+import { sendMail } from '@/utils/mail'
 
 export const createVolunteer = async (
 	data: VolunteerSchemaRouteType & { eventId: string },
@@ -40,6 +41,13 @@ export const createVolunteer = async (
 		if (!isRegistrationOpen?.isVolunteerRegistrationOpen && !inscriptionType) {
 			return NextResponse.json({ error: 'Inscrições encerradas' }, { status: 400 })
 		}
+
+		await sendMail({
+			email: restData.email,
+			event: isRegistrationOpen?.name ?? '',
+			name: restData.name,
+			type: MEMBERS.VOLUNTEER,
+		})
 
 		return await prisma.$transaction(async (tx) => {
 			const volunteer = await tx.volunteer.create({

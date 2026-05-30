@@ -66,7 +66,7 @@ export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }
 	const handleSubmitForm: SubmitHandler<VolunteerType> = async (values) => {
 		if (!values) return
 
-		const { hasCell, cell, hasHealth, health, hasServed, ...data } = values
+		const { hasCell, cell, hasHealth, health, hasServed, shirtSize, ...data } = values
 
 		const formattedData = {
 			...data,
@@ -77,7 +77,7 @@ export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }
 			phone: values.phone.replace(/\D/g, ''),
 			relativePhone: values.relativePhone.replace(/\D/g, ''),
 			withShirt: hasShirt === 'Yes',
-			...(hasShirt !== 'Yes' && { shirtSize: null }),
+			...(hasShirt === 'Yes' && { shirtSize }),
 			...(!selectedVolunteer && { inscriptionType: 'internal' as const }),
 		}
 
