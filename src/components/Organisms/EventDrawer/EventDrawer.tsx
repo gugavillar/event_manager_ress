@@ -7,7 +7,7 @@ import { Button, Drawer, DrawerBody, DrawerFooter, FileInput } from '@/component
 import { CurrencyInputField, InputField, MaskedInputField, SelectField } from '@/components/Molecules'
 import type { SelectedEvent } from '@/components/Templates'
 import { EVENTS_MODAL_TYPE, GenderSelectOptions } from '@/constants'
-import { formatDateToSendToApi, removeCurrencyFormat } from '@/formatters'
+import { formatDateToSendToApi, parseUrlToFile, removeCurrencyFormat } from '@/formatters'
 import { useCreateEvent, useGetEvent, useUpdateEvent } from '@/services/queries/events'
 import type { EventsAPI, FormEvent } from '@/services/queries/events/event.type'
 import { generateToastError } from '@/utils/errors'
@@ -75,16 +75,21 @@ export const EventDrawer = ({ selectedEvent, setSelectedEvent }: EventDrawerProp
 	}
 
 	useEffect(() => {
-		if (!data) return reset()
-		const { maxAge, minAge, ...rest } = data
-		reset(
-			{
-				...rest,
-				...(minAge && { minAge: String(minAge) }),
-				...(maxAge && { maxAge: String(maxAge) }),
-			},
-			{ keepDefaultValues: true }
-		)
+		const load = async () => {
+			if (!data) return reset()
+			const { maxAge, minAge, imageUrl, ...rest } = data
+			const img = imageUrl ? await parseUrlToFile(imageUrl, rest.name, 'image/png') : undefined
+			reset(
+				{
+					...rest,
+					...(img && img?.size > 0 && { file: img }),
+					...(minAge && { minAge: String(minAge) }),
+					...(maxAge && { maxAge: String(maxAge) }),
+				},
+				{ keepDefaultValues: true }
+			)
+		}
+		load()
 	}, [data, reset])
 
 	return (
