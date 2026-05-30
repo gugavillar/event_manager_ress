@@ -8,7 +8,13 @@ import { Pagination } from '@/components/Atoms'
 import { ListManager } from '@/components/Molecules'
 import { FilterDrawer, ListPage, ModalReturnPayment, PageContent } from '@/components/Organisms'
 import type { PaymentModalType } from '@/components/Organisms/PaymentModal/PaymentModal.schema'
-import { MEMBERS, PaymentTypeAPI, VOLUNTEER_MODAL_TYPE } from '@/constants'
+import {
+	MEMBERS,
+	PaymentTypeAPI,
+	realValueInscriptionVolunteer,
+	type ShirtsAPI,
+	VOLUNTEER_MODAL_TYPE,
+} from '@/constants'
 import { removeCurrencyFormat } from '@/formatters'
 import { useCreateVolunteerPayment, useGetPayments, useReturnVolunteerPayment } from '@/services/queries/volunteers'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
@@ -61,13 +67,21 @@ export const VolunteersPayments = () => {
 		async (values: PaymentModalType) => {
 			if (!selectedVolunteer) return
 
+			const eventValue =
+				realValueInscriptionVolunteer(
+					Boolean(selectedVolunteer?.withShirt),
+					selectedVolunteer?.event?.volunteerPrice ?? '0',
+					selectedVolunteer?.event?.volunteerPriceWithShirt ?? '0',
+					selectedVolunteer?.shirtSize as ShirtsAPI
+				) ?? 0
+
 			const formatValues = {
 				eventId: selectedVolunteer.eventId,
 				paymentType: values.paymentType as PaymentTypeAPI,
 				paymentValue:
 					values.paid === 'partial' && values.paymentValue
 						? Number(removeCurrencyFormat(values.paymentValue))
-						: Number(removeCurrencyFormat(selectedVolunteer.event.volunteerPrice)),
+						: eventValue,
 				volunteerId: selectedVolunteer.id,
 				...(values.paymentType === PaymentTypeAPI.CARD && {
 					paymentReceived: Number(removeCurrencyFormat(values.paymentReceived as string)),
@@ -107,7 +121,13 @@ export const VolunteersPayments = () => {
 
 	const isExistPayment = Boolean(selectedVolunteer?.payments?.length)
 	const paidValue = selectedVolunteer?.payments?.reduce((total, p) => (total += Number(p.paymentValue)), 0) ?? 0
-	const eventValue = Number(selectedVolunteer?.event?.volunteerPrice) ?? 0
+	const eventValue =
+		realValueInscriptionVolunteer(
+			Boolean(selectedVolunteer?.withShirt),
+			selectedVolunteer?.event?.volunteerPrice ?? '0',
+			selectedVolunteer?.event?.volunteerPriceWithShirt ?? '0',
+			selectedVolunteer?.shirtSize as ShirtsAPI
+		) ?? 0
 
 	return (
 		<PageContent pageTitle="Pagamentos dos voluntários" subheadingPage="Lista de pagamentos">

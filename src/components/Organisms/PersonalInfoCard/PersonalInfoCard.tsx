@@ -4,6 +4,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { InformationCard, Spinner, Text } from '@/components/Atoms'
 import { InfoBox } from '@/components/Molecules'
+import { CivilStatus, type CivilStatusAPI } from '@/constants'
 
 type PersonalInfoCardProps = ComponentProps<'div'> & {
 	userInfo: {
@@ -17,6 +18,9 @@ type PersonalInfoCardProps = ComponentProps<'div'> & {
 		religion?: string
 		health?: string
 		pictureUrl?: string
+		civilStatus?: CivilStatusAPI
+		shirtSize?: string
+		servedLastEvent?: string | null
 	}
 	type: 'volunteer' | 'participant'
 	seePicture?: VoidFunction
@@ -39,9 +43,14 @@ export const PersonalInfoCard = ({
 			<InfoBox label="Data de nascimento" value={userInfo.birthdate} />
 			<InfoBox isPhone label="Telefone" value={userInfo.phone} />
 			{type === 'participant' ? (
-				<InfoBox label="Religião" value={userInfo?.religion ?? 'Não possui'} />
+				<>
+					<InfoBox label="Religião" value={userInfo?.religion ?? 'Não possui'} />
+					<InfoBox label="Estado Civil" value={CivilStatus[userInfo?.civilStatus as CivilStatusAPI]?.label} />
+				</>
 			) : (
 				<>
+					<InfoBox label="Tamanho da camisa" value={userInfo?.shirtSize} />
+					<InfoBox label="Serviu no último evento" value={userInfo?.servedLastEvent} />
 					<InfoBox label="Célula" value={userInfo?.cell ?? 'Não frequenta'} />
 					<InfoBox label="Comunidade" value={userInfo?.community} />
 				</>

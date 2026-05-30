@@ -5,7 +5,7 @@ import {
 	userPermissionDrawerSchema,
 } from '@/components/Organisms/UserPermissionDrawer/UserPermissionDrawer.schema'
 
-import { MEMBERS } from './status'
+import { MEMBERS, ShirtsAPI } from './status'
 
 export const generatePage = (page: string | undefined) => {
 	if (!page) return 1
@@ -112,4 +112,15 @@ export const safeParse = (
 	} catch {
 		return { data: null, success: false }
 	}
+}
+
+export const realValueInscriptionVolunteer = (
+	withShirt: boolean,
+	volunteerPrice: string,
+	volunteerPriceWithShirt: string,
+	shirtSize: ShirtsAPI
+) => {
+	if (withShirt && shirtSize === ShirtsAPI.SPECIAL) return Number(volunteerPriceWithShirt) + 5
+	if (withShirt) return Number(volunteerPriceWithShirt)
+	return Number(volunteerPrice)
 }

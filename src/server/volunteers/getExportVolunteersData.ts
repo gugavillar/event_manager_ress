@@ -58,6 +58,9 @@ export const getExportVolunteersData = async (eventId: string) => {
 			Alimentação_Saúde: volunteer.health || 'Não possui',
 			Parente: volunteer.relative,
 			Telefone_Parente: formatPhone(volunteer.relativePhone),
+			Tipo_Inscrição: volunteer.withShirt ? 'Com Camisa' : 'Sem Camisa',
+			Tamanho_Camisa: volunteer.withShirt ? volunteer.shirtSize : '',
+			Evento_Anterior: volunteer.servedLastEvent || 'Não Serviu',
 			Função: !volunteer.eventRoles?.length
 				? 'Sem Função'
 				: volunteer.eventRoles

@@ -7,7 +7,7 @@ import { Text, WhatsAppIcon } from '@/components/Atoms'
 
 type InfoBoxProps = ComponentProps<'div'> & {
 	label: string
-	value?: string
+	value?: string | null
 	isPhone?: boolean
 }
 

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { utils, write } from 'xlsx'
 import { z } from 'zod'
 
-import { generateColumnWidths } from '@/constants'
+import { CivilStatus, generateColumnWidths } from '@/constants'
 import { currencyValue, formatBirthdate, formatCheckIn, formatPhone, paymentDate, paymentStatus } from '@/formatters'
 import { prisma } from '@/lib/prisma'
 
@@ -59,6 +59,7 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 				Bairro: participant.address?.neighborhood,
 				Cidade: `${participant.address?.city} - ${participant.address?.state}`,
 				Telefone: formatPhone(participant.phone),
+				Estado_Civil: CivilStatus[participant.civilStatus].label,
 				Alimentação_Saúde: participant.health || 'Não possui',
 				Responsável: participant.responsible,
 				Telefone_Responsável: formatPhone(participant.responsiblePhone),
@@ -94,6 +95,7 @@ export const getExportParticipantsData = async (eventId: string, isInterested: b
 			Bairro: participant.address?.neighborhood,
 			Cidade: `${participant.address?.city} - ${participant.address?.state}`,
 			Telefone: formatPhone(participant.phone),
+			Estado_Civil: CivilStatus[participant.civilStatus].label,
 			Alimentação_Saúde: participant.health || 'Não possui',
 			Responsável: participant.responsible,
 			Telefone_Responsável: formatPhone(participant.responsiblePhone),

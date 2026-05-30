@@ -1,6 +1,6 @@
 import type { UUID } from 'node:crypto'
 
-import type { CHECK_IN_STATUS, PaymentTypeAPI } from '@/constants'
+import type { CHECK_IN_STATUS, PaymentTypeAPI, ShirtsAPI } from '@/constants'
 
 import type { EventsAPI } from '../events/event.type'
 
@@ -23,6 +23,9 @@ export type VolunteersAPI = {
 	cell?: string
 	health?: string
 	community: string
+	withShirt: boolean
+	servedLastEvent: null | string
+	shirtSize: ShirtsAPI
 	checkIn: CHECK_IN_STATUS | null
 	createdAt: string
 	updatedAt: string

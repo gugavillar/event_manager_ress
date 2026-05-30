@@ -2,7 +2,13 @@ import { BanknoteArrowUp, FileUser, HandCoins } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 
 import { PaymentTag, Tooltip } from '@/components/Atoms'
-import { CHECK_IN_STATUS, COMMON_PROPS_TOOLTIPS_BUTTON_TABLE, LINE_COLOR, PaymentTypeAPI } from '@/constants'
+import {
+	CHECK_IN_STATUS,
+	COMMON_PROPS_TOOLTIPS_BUTTON_TABLE,
+	LINE_COLOR,
+	PaymentTypeAPI,
+	realValueInscriptionVolunteer,
+} from '@/constants'
 import { currencyValue, formatPhone } from '@/formatters'
 import type { VolunteersAPI } from '@/services/queries/volunteers/volunteers.type'
 
@@ -68,8 +74,14 @@ export const formatTableData = (
 			return total
 		}, 0)
 
-		const isPaymentNotTotal = totalPayment > 0 && totalPayment < Number(payment.event.volunteerPrice)
-		const isPaymentTotal = totalPayment >= Number(payment.event.volunteerPrice)
+		const volunteerInscriptionValue = realValueInscriptionVolunteer(
+			payment.withShirt,
+			payment.event.volunteerPrice,
+			payment.event.volunteerPriceWithShirt,
+			payment.shirtSize
+		)
+		const isPaymentNotTotal = totalPayment > 0 && totalPayment < Number(volunteerInscriptionValue)
+		const isPaymentTotal = totalPayment >= Number(volunteerInscriptionValue)
 		const isVolunteerPaidAndWithdraw = isVolunteerWithdraw && totalPayment > 0
 		const canInformPayment = !isPaymentTotal && !isVolunteerWithdraw
 
@@ -119,7 +131,7 @@ export const formatTableData = (
 			),
 			called: payment.called,
 			eventName: payment.event.name,
-			eventValue: currencyValue(Number(payment.event.volunteerPrice)),
+			eventValue: currencyValue(Number(volunteerInscriptionValue)),
 			id: payment.id,
 			name: payment.name,
 			payment: (

@@ -117,6 +117,11 @@ export const PAYMENT_METHOD_EXTERNAL_OPTIONS = [
 	{ label: 'PIX', value: 'PIX' },
 ]
 
+export const INSCRIPTION_OPTION_VOLUNTEER = [
+	{ label: 'Inscrição com camisa', value: 'Yes' },
+	{ label: 'Inscrição sem camisa', value: 'No' },
+]
+
 export const PIX = {
 	city: 'Vitória de Santo Antão',
 	key: process.env.NEXT_PUBLIC_PIX_KEY ?? '',

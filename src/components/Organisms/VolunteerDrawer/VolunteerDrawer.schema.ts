@@ -68,6 +68,16 @@ export const VolunteerSchema = z
 			.refine((value) => ['Yes', 'No'].includes(value), {
 				error: 'Campo obrigatório',
 			}),
+		hasServed: z
+			.union([
+				z.enum(['Yes', 'No'], {
+					error: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['Yes', 'No'].includes(value), {
+				error: 'Campo obrigatório',
+			}),
 		health: z.string().nullable().optional(),
 		name: z
 			.string()
@@ -87,6 +97,18 @@ export const VolunteerSchema = z
 			.string({ error: 'Campo obrigatório' })
 			.trim()
 			.refine((value) => (!value || value.length < 15 ? false : validatePhone(value)), { error: 'Telefone inválido' }),
+		servedLastEvent: z.string().nullable().optional(),
+		shirtSize: z.string().nullable().optional(),
+		withShirt: z
+			.union([
+				z.enum(['Yes', 'No'], {
+					error: 'Campo obrigatório',
+				}),
+				z.string(),
+			])
+			.refine((value) => ['Yes', 'No'].includes(value), {
+				error: 'Campo obrigatório',
+			}),
 	})
 	.superRefine((data, ctx) => {
 		if (data.hasCell === 'Yes' && !data.cell?.trim()) {
@@ -101,6 +123,20 @@ export const VolunteerSchema = z
 				code: 'custom',
 				message: 'Campo obrigatório',
 				path: ['health'],
+			})
+		}
+		if (data.withShirt === 'Yes' && !data.shirtSize) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Campo obrigatório',
+				path: ['shirtSize'],
+			})
+		}
+		if (data.hasServed === 'Yes' && !data.servedLastEvent?.trim()) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'Campo obrigatório',
+				path: ['servedLastEvent'],
 			})
 		}
 		validatePhonesNotEquals(data.phone, [{ field: 'relativePhone', phone: data.relativePhone }], ctx)

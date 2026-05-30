@@ -6,7 +6,13 @@ import toast from 'react-hot-toast'
 import { Button, Drawer, DrawerBody, DrawerFooter } from '@/components/Atoms'
 import { InputField, MaskedInputField, SearchBox, SelectField } from '@/components/Molecules'
 import type { SelectedVolunteer } from '@/components/Templates'
-import { UF, VOLUNTEER_MODAL_TYPE, YES_OR_NO_SELECT_OPTIONS } from '@/constants'
+import {
+	INSCRIPTION_OPTION_VOLUNTEER,
+	ShirtsOptions,
+	UF,
+	VOLUNTEER_MODAL_TYPE,
+	YES_OR_NO_SELECT_OPTIONS,
+} from '@/constants'
 import { formatDateToSendToApi, formatterComboBoxValues } from '@/formatters'
 import { useInfiniteScrollObserver } from '@/hooks'
 import { useGetCities } from '@/services/queries/cities'
@@ -38,6 +44,8 @@ export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }
 	const selectedUF = watch('address.state')
 	const hasCell = watch('hasCell')
 	const hasHealth = watch('hasHealth')
+	const hasServed = watch('hasServed')
+	const hasShirt = watch('withShirt')
 
 	const { data: cities } = useGetCities({
 		nome: selectedUF,
@@ -58,15 +66,18 @@ export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }
 	const handleSubmitForm: SubmitHandler<VolunteerType> = async (values) => {
 		if (!values) return
 
-		const { hasCell, cell, hasHealth, health, ...data } = values
+		const { hasCell, cell, hasHealth, health, hasServed, ...data } = values
 
 		const formattedData = {
 			...data,
 			...(hasCell === 'Yes' ? { cell } : { cell: null }),
 			...(hasHealth === 'Yes' ? { health } : { health: null }),
+			...(hasServed === 'Yes' ? { servedLastEvent: data.servedLastEvent } : { servedLastEvent: null }),
 			birthdate: formatDateToSendToApi(values.birthdate),
 			phone: values.phone.replace(/\D/g, ''),
 			relativePhone: values.relativePhone.replace(/\D/g, ''),
+			withShirt: hasShirt === 'Yes',
+			...(hasShirt !== 'Yes' && { shirtSize: null }),
 			...(!selectedVolunteer && { inscriptionType: 'internal' as const }),
 		}
 
@@ -111,7 +122,10 @@ export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }
 	useEffect(() => {
 		if (!data) return reset({}, { keepDefaultValues: true })
 
-		reset({ ...data }, { keepDefaultValues: true })
+		reset(
+			{ ...data, shirtSize: data.withShirt ? data.shirtSize : undefined, withShirt: data.withShirt ? 'Yes' : 'No' },
+			{ keepDefaultValues: true }
+		)
 	}, [data, reset])
 
 	return (
@@ -151,6 +165,14 @@ export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }
 					Data de nascimento
 				</MaskedInputField>
 				<InputField fieldName="community">Igreja que frequenta</InputField>
+				<SelectField fieldName="hasServed" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
+					Serviu no último evento?
+				</SelectField>
+				{hasServed === 'Yes' && (
+					<InputField fieldName="servedLastEvent" placeholder="Função">
+						Qual a função?
+					</InputField>
+				)}
 				<SelectField fieldName="hasCell" options={YES_OR_NO_SELECT_OPTIONS} placeholder="Selecione uma opção">
 					Participa de célula?
 				</SelectField>
@@ -159,6 +181,14 @@ export const VolunteerDrawer = memo(({ selectedVolunteer, setSelectedVolunteer }
 					Tem restrição saúde/alimentar?
 				</SelectField>
 				{hasHealth === 'Yes' && <InputField fieldName="health">Descreva?</InputField>}
+				<SelectField fieldName="withShirt" options={INSCRIPTION_OPTION_VOLUNTEER} placeholder="Selecione uma opção">
+					Opção de inscrição
+				</SelectField>
+				{hasShirt === 'Yes' && (
+					<SelectField fieldName="shirtSize" options={ShirtsOptions} placeholder="Selecione uma opção">
+						Qual o tamanho?
+					</SelectField>
+				)}
 				<InputField fieldName="relative">Parente próximo</InputField>
 				<MaskedInputField fieldName="relativePhone" format="(##) #####-####">
 					Telefone do parente

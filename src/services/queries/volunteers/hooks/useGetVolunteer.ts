@@ -30,6 +30,7 @@ export const useGetVolunteer = (volunteerId: VolunteersAPI['id'] | null) => {
 			birthdate: format(data.birthdate, 'dd/MM/yyyy'),
 			hasCell: data.cell ? 'Yes' : ('No' as 'Yes' | 'No'),
 			hasHealth: data.health ? 'Yes' : ('No' as 'Yes' | 'No'),
+			hasServed: data.servedLastEvent ? 'Yes' : ('No' as 'Yes' | 'No'),
 			phone: formatPhone(data.phone),
 			relativePhone: formatPhone(data.relativePhone),
 		}),

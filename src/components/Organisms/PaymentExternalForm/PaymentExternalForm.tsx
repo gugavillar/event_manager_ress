@@ -8,7 +8,14 @@ import { SelectField } from '@/components/Molecules'
 import type { ExternalParticipantFormProps, ExternalVolunteerFormProps } from '@/components/Templates'
 import type { FullSchemaType as FullSchemaTypeParticipant } from '@/components/Templates/ExternalParticipantForm/ExternalParticipantForm.schema'
 import type { FullSchemaType as FullSchemaTypeVolunteer } from '@/components/Templates/ExternalVolunteerForm/ExternalVolunteerForm.schema'
-import { MEMBERS, PAYMENT_METHOD_EXTERNAL_OPTIONS, ShirtsAPI, ShirtsOptions } from '@/constants'
+import {
+	INSCRIPTION_OPTION_VOLUNTEER,
+	MEMBERS,
+	PAYMENT_METHOD_EXTERNAL_OPTIONS,
+	realValueInscriptionVolunteer,
+	type ShirtsAPI,
+	ShirtsOptions,
+} from '@/constants'
 
 import { PaymentChoice } from './PaymentChoice'
 import { PaymentObservations } from './PaymentObservations'
@@ -18,11 +25,6 @@ type DefaultProps = ExternalParticipantFormProps & ExternalVolunteerFormProps
 type PaymentExternalFormProps = DefaultProps & {
 	setCurrentStep: Dispatch<SetStateAction<number>>
 }
-
-const INSCRIPTION_OPTION = [
-	{ label: 'Inscrição com camisa', value: 'Yes' },
-	{ label: 'Inscrição sem camisa', value: 'No' },
-]
 
 export const PaymentExternalForm = ({
 	registrationValue,
@@ -36,11 +38,15 @@ export const PaymentExternalForm = ({
 
 	const paymentMethod = watch('paymentMethod') ?? ''
 	const lastSundayFromEvent = format(previousSunday(initialDate ?? new Date()), 'dd MMMM', { locale: ptBR })
-	const hasShirt = watch('withShirt')
-	const isShirtSizeSpecial = watch('shirtSize') === ShirtsAPI.SPECIAL
-	const valueWithShirt =
-		isShirtSizeSpecial && registrationValueWithShirt ? registrationValueWithShirt + 5 : registrationValueWithShirt
-	const isShowPaymentMethod = Boolean(hasShirt) || inscriptionType !== MEMBERS.VOLUNTEER
+	const hasShirt = watch('withShirt') === 'Yes'
+	const shirtSize = watch('shirtSize')
+	const inscriptionValue = realValueInscriptionVolunteer(
+		hasShirt,
+		String(registrationValue),
+		String(registrationValueWithShirt),
+		shirtSize as ShirtsAPI
+	)
+	const isShowPaymentMethod = Boolean(watch('withShirt')) || inscriptionType !== MEMBERS.VOLUNTEER
 
 	return (
 		<div className="flex flex-col space-y-8">
@@ -51,10 +57,10 @@ export const PaymentExternalForm = ({
 			/>
 			{inscriptionType === MEMBERS.VOLUNTEER && (
 				<div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-					<SelectField fieldName="withShirt" options={INSCRIPTION_OPTION} placeholder="Selecione uma opção">
-						Selecione sua opção de Inscrição
+					<SelectField fieldName="withShirt" options={INSCRIPTION_OPTION_VOLUNTEER} placeholder="Selecione uma opção">
+						Selecione sua opção de inscrição
 					</SelectField>
-					{hasShirt === 'Yes' && (
+					{hasShirt && (
 						<SelectField fieldName="shirtSize" options={ShirtsOptions} placeholder="Selecione uma opção">
 							Qual o tamanho?
 						</SelectField>
@@ -73,7 +79,7 @@ export const PaymentExternalForm = ({
 			<PaymentChoice
 				paymentMethod={paymentMethod}
 				pixValue={pixValue}
-				registrationValue={hasShirt === 'Yes' ? valueWithShirt : registrationValue}
+				registrationValue={inscriptionValue}
 				setCurrentStep={setCurrentStep}
 				setPixValue={setPixValue}
 			/>
