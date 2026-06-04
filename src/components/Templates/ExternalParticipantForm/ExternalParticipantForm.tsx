@@ -172,6 +172,7 @@ export const ExternalParticipantForm = ({
 				finalDate={finalDate}
 				initialDate={initialDate}
 				isOpen={isOpen}
+				minAge={minAge}
 				registrationValue={registrationValue}
 				setIsOpen={setIsOpen}
 			/>

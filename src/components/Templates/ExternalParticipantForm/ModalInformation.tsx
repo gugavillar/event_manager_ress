@@ -12,10 +12,11 @@ type ModalInformationProps = {
 	initialDate?: Date
 	finalDate?: Date
 	registrationValue?: number
+	minAge?: number | null
 }
 
 export const ModalInformation = memo(
-	({ isOpen, setIsOpen, initialDate, finalDate, registrationValue }: ModalInformationProps) => {
+	({ isOpen, setIsOpen, initialDate, finalDate, registrationValue, minAge }: ModalInformationProps) => {
 		const handleClose = () => {
 			setIsOpen(false)
 		}
@@ -36,19 +37,17 @@ export const ModalInformation = memo(
 						LEIA COM ATENÇÃO ESTAS ORIENTAÇÕES
 					</Header>
 					<div className="flex flex-col space-y-4 px-8">
-						<strong className="text-center text-md">IDADE MÍNIMA 25 ANOS, PARA PARTICIPAR DO CURSILHO</strong>
+						<strong className="text-center text-md">IDADE MÍNIMA {minAge} ANOS, PARA PARTICIPAR DO EVENTO</strong>
 						<ol className="flex list-decimal flex-col space-y-4 text-justify text-sm">
 							<li>O preenchimento da sua ficha não implica aceitação imediata e consequente participação;</li>
 							<li>
-								Você que participará deste cursilho, deverá entrar em contato com Luciana (Tesoureira) (81) 98413-0663
+								Você que participará deste evento, deverá entrar em contato com Luciana (Tesoureira) (81) 98413-0663
 								para realizar o pagamento da inscrição no valor de{' '}
 								<strong>{currencyValue(registrationValue as number)}</strong> (
 								{extenso(registrationValue as number, { mode: 'currency' })}) até o dia{' '}
 								<strong>{lastSundayFromEvent}</strong>.{' '}
-								<strong>
-									Formas de pagamento: Dinheiro em espécie, PIX (pixcursilhoanglicanaress@gmail.com) e Cartão de Crédito
-								</strong>
-								, o qual visa cobrir despesas com alimentação, transporte, material gráfico e hospedagem;
+								<strong>Formas de pagamento: Dinheiro em espécie, PIX e Cartão de Crédito</strong>, o qual visa cobrir
+								despesas com alimentação, transporte, material gráfico e hospedagem;
 							</li>
 							<li>
 								Levar materiais de higiene pessoal, remédios habituais, travesseiro, toalha de banho e lençóis, utilize
